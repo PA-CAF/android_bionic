@@ -559,6 +559,7 @@ class State:
     # Scan Linux kernel asm/unistd.h files containing __NR_* constants
     # and write out equivalent SYS_* constants for glibc source compatibility.
     def gen_glibc_syscalls_h(self):
+        # TODO: generate a separate file for each architecture, like glibc's bits/syscall.h.
         glibc_syscalls_h_path = "include/bits/glibc-syscalls.h"
         logging.info("generating " + glibc_syscalls_h_path)
         glibc_fp = create_file(glibc_syscalls_h_path)
