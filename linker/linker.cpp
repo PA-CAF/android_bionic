@@ -1310,7 +1310,7 @@ static void for_each_matching_shim(const char *const path, F action) {
 // walk_dependencies_tree returns false if walk was terminated
 // by the action and true otherwise.
 template<typename F>
-static bool walk_dependencies_tree(soinfo* root_soinfos[], size_t root_soinfos_size, bool do_shims, F action) {
+static bool walk_dependencies_tree(soinfo* root_soinfos[], size_t root_soinfos_size, F action) {
   SoinfoLinkedList visit_list;
   SoinfoLinkedList visited;
 
@@ -1330,13 +1330,6 @@ static bool walk_dependencies_tree(soinfo* root_soinfos[], size_t root_soinfos_s
 
     visited.push_back(si);
 
-    if (do_shims) {
-      shim_libs_for_each(si->get_realpath(), [&](soinfo* child) {
-        si->add_child(child);
-        visit_list.push_back(child);
-      });
-    }
-
     si->get_children().for_each([&](soinfo* child) {
       visit_list.push_back(child);
     });
@@ -1352,7 +1345,7 @@ static const ElfW(Sym)* dlsym_handle_lookup(soinfo* root, soinfo* skip_until,
   const ElfW(Sym)* result = nullptr;
   bool skip_lookup = skip_until != nullptr;
 
-  walk_dependencies_tree(&root, 1, false, [&](soinfo* current_soinfo) {
+  walk_dependencies_tree(&root, 1, [&](soinfo* current_soinfo) {
     if (skip_lookup) {
       skip_lookup = current_soinfo != skip_until;
       return true;
@@ -1752,6 +1745,7 @@ static void for_each_dt_needed(const soinfo* si, F action) {
       action(fix_dt_needed(si->get_string(d->d_un.d_val), si->get_realpath()));
     }
   }
+  for_each_matching_shim(si->get_realpath(), action);
 }
 
 template<typename F>
@@ -1762,6 +1756,7 @@ static void for_each_dt_needed(const ElfReader& elf_reader, F action) {
       action(fix_dt_needed(elf_reader.get_string(d->d_un.d_val), elf_reader.name()));
     }
   }
+  for_each_matching_shim(elf_reader.name(), action);
 }
 
 static bool load_library(android_namespace_t* ns,
@@ -2207,7 +2202,6 @@ static bool find_libraries(android_namespace_t* ns,
   walk_dependencies_tree(
       (start_with != nullptr && add_as_children) ? &start_with : soinfos,
       (start_with != nullptr && add_as_children) ? 1 : soinfos_count,
-      true,
       [&] (soinfo* si) {
     local_group.push_back(si);
     return true;
