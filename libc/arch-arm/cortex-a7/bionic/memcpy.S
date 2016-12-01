@@ -61,8 +61,8 @@
         .fpu    neon
 
 ENTRY(__memcpy_chk)
-        cmp r2, r3
-        bls memcpy
+        cmp     r2, r3
+        bhi     .L_memcpy_chk_fail
 
         // Preserve lr for backtrace.
         push        {lr}
