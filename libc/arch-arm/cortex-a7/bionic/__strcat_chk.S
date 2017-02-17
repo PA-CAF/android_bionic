@@ -178,7 +178,7 @@ ENTRY(__strcat_chk)
     cmp     r2, lr
     itt     hi
     movhi   r0, lr
-    bhi     .L_strcat_chk_failed
+    bhi     __strcat_chk_fail
 
     // Set up the registers for the memcpy code.
     mov     r1, r5

@@ -154,7 +154,7 @@ ENTRY(__strcpy_chk)
     cmp     r2, lr
     itt     hi
     movhi   r0, r2
-    bhi     .L_strcpy_chk_failed
+    bhi     __strcpy_chk_fail
 
 #include "memcpy_base.S"
 

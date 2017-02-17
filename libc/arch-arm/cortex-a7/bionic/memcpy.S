@@ -67,7 +67,7 @@ ENTRY(__memcpy_chk)
         push        {lr}
         .cfi_def_cfa_offset 4
         .cfi_rel_offset lr, 0
-        bl          .L_memcpy_chk_fail
+        bl          __memcpy_chk_fail
 END(__memcpy_chk)
 
 // Prototype: void *memcpy (void *dst, const void *src, size_t count).
