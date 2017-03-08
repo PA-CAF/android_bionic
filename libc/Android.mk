@@ -244,7 +244,7 @@ libc_bionic_ndk_src_files := \
 
 libc_bionic_ndk_src_files += \
     codeaurora/PropClientDispatch.cpp \
-    codeaurora/PropClientDispatchWrite.cpp \
+    codeaurora/PropClientDispatchWrite.cpp
 
 libc_bionic_src_files :=
 
@@ -1022,6 +1022,13 @@ LOCAL_CFLAGS := $(libc_common_cflags) \
 
 LOCAL_CONLYFLAGS := $(libc_common_conlyflags)
 LOCAL_CPPFLAGS := $(libc_common_cppflags) -Wold-style-cast
+
+ifeq ($(BOARD_USES_QCNE),true)
+ifeq ($(BOARD_USES_LIBC_WRAPPER),true)
+LOCAL_CPPFLAGS += -DUSE_WRAPPER
+endif
+endif
+
 LOCAL_C_INCLUDES := $(libc_common_c_includes) bionic/libstdc++/include
 LOCAL_MODULE := libc_bionic
 LOCAL_CLANG := $(use_clang)
@@ -1049,8 +1056,21 @@ LOCAL_SRC_FILES := $(libc_bionic_ndk_src_files)
 LOCAL_CFLAGS := $(libc_common_cflags) \
     -Wframe-larger-than=2048 \
 
+ifeq ($(BOARD_USES_QCNE),true)
+ifeq ($(BOARD_USES_LIBC_WRAPPER),true)
+LOCAL_CFLAGS += -DUSE_WRAPPER
+endif
+endif
+
 LOCAL_CONLYFLAGS := $(libc_common_conlyflags)
-LOCAL_CPPFLAGS := $(libc_common_cppflags) -Wold-style-cast
+LOCAL_CPPFLAGS := $(libc_common_cppflags) -Wold-style-cast \
+
+ifeq ($(BOARD_USES_QCNE),true)
+ifeq ($(BOARD_USES_LIBC_WRAPPER),true)
+LOCAL_CPPFLAGS += -DUSE_WRAPPER
+endif
+endif
+
 LOCAL_C_INCLUDES := $(libc_common_c_includes) bionic/libstdc++/include
 LOCAL_MODULE := libc_bionic_ndk
 LOCAL_CLANG := $(use_clang)
@@ -1205,6 +1225,12 @@ LOCAL_SRC_FILES_arm += \
 LOCAL_CFLAGS := $(libc_common_cflags) \
     -DLIBC_STATIC \
 
+ifeq ($(BOARD_USES_QCNE),true)
+ifeq ($(BOARD_USES_LIBC_WRAPPER),true)
+LOCAL_CFLAGS += -DUSE_WRAPPER
+endif
+endif
+
 LOCAL_WHOLE_STATIC_LIBRARIES := \
     libc_bionic_ndk \
     libc_cxa \
@@ -1238,6 +1264,12 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := $(libc_common_src_files)
 LOCAL_CFLAGS := $(libc_common_cflags) \
+
+ifeq ($(BOARD_USES_QCNE),true)
+ifeq ($(BOARD_USES_LIBC_WRAPPER),true)
+LOCAL_CFLAGS += -DUSE_WRAPPER
+endif
+endif
 
 LOCAL_CONLYFLAGS := $(libc_common_conlyflags)
 LOCAL_CPPFLAGS := $(libc_common_cppflags)
@@ -1383,6 +1415,13 @@ LOCAL_SRC_FILES := \
     bionic/libc_init_dynamic.cpp \
     bionic/NetdClient.cpp \
     arch-common/bionic/crtend_so.S \
+
+ifeq ($(BOARD_USES_QCNE),true)
+ifeq ($(BOARD_USES_LIBC_WRAPPER),true)
+    LOCAL_SRC_FILES += codeaurora/PropClient.cpp
+    LOCAL_CPPFLAGS += -DUSE_WRAPPER
+endif
+endif
 
 LOCAL_MODULE := libc
 LOCAL_CLANG := $(use_clang)
