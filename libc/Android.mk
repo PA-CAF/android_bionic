@@ -242,10 +242,6 @@ libc_bionic_ndk_src_files := \
     bionic/wctype.cpp \
     bionic/wmempcpy.cpp \
 
-libc_bionic_ndk_src_files += \
-    codeaurora/PropClientDispatch.cpp \
-    codeaurora/PropClientDispatchWrite.cpp \
-
 libc_bionic_src_files :=
 
 # The following implementations depend on pthread data, so we can't include
