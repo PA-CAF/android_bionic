@@ -644,6 +644,10 @@ ifeq ($(strip $(DEBUG_BIONIC_LIBC)),true)
   libc_common_cflags += -DDEBUG
 endif
 
+ifeq ($(strip $(BOARD_USES_LIBC_WRAPPER)),true)
+  libc_common_cflags += -DUSE_WRAPPER
+endif
+
 libc_malloc_src := bionic/jemalloc_wrapper.cpp
 libc_common_c_includes += external/jemalloc/include
 
@@ -1263,7 +1267,7 @@ include $(BUILD_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := $(libc_common_src_files)
-LOCAL_CFLAGS := $(libc_common_cflags) \
+LOCAL_CFLAGS := $(libc_common_cflags)
 
 ifeq ($(BOARD_USES_QCNE),true)
 ifeq ($(BOARD_USES_LIBC_WRAPPER),true)
