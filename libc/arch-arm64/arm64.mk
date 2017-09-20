@@ -35,6 +35,7 @@ libc_openbsd_src_files_exclude_arm64 += \
     upstream-openbsd/lib/libc/string/strcpy.c \
     upstream-openbsd/lib/libc/string/strncmp.c \
 
+
 #
 # Inherently architecture-specific code.
 #

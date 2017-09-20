@@ -12,27 +12,19 @@ libc_bionic_src_files_exclude_arm += \
     bionic/__strcat_chk.cpp \
     bionic/__strcpy_chk.cpp \
 
-# Use cortext-a7 version of memset
 libc_bionic_src_files_arm += \
-    arch-arm/cortex-a7/bionic/memset.S \
-
-# Use cortex-a15 versions of strcat/strcpy/strlen.
-libc_bionic_src_files_arm += \
+    arch-arm/cortex-a15/bionic/memcpy.S \
     arch-arm/cortex-a15/bionic/stpcpy.S \
     arch-arm/cortex-a15/bionic/strcat.S \
-    arch-arm/cortex-a15/bionic/strcmp.S \
+    arch-arm/cortex-a15/bionic/__strcat_chk.S \
     arch-arm/cortex-a15/bionic/strcpy.S \
+    arch-arm/cortex-a15/bionic/__strcpy_chk.S \
     arch-arm/cortex-a15/bionic/strlen.S \
 
-# Use krait versions of strcmp
+# Use krait versions of memset/strcmp
 libc_bionic_src_files_arm += \
+    arch-arm/krait/bionic/memset.S \
     arch-arm/krait/bionic/strcmp.S \
-    arch-arm/krait/bionic/__strcat_chk.S \
-    arch-arm/krait/bionic/__strcpy_chk.S \
-
-# Use kryo versions of memcpy
-libc_bionic_src_files_arm += \
-    arch-arm/kryo/bionic/memcpy.S \
 
 # Use Denver version of memmove
 libc_bionic_src_files_arm += \

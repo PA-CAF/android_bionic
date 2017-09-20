@@ -196,8 +196,6 @@ libc_bionic_ndk_src_files := \
     bionic/sched_getcpu.cpp \
     bionic/semaphore.cpp \
     bionic/send.cpp \
-    bionic/sendmsg.cpp \
-    bionic/sendto.cpp \
     bionic/setegid.cpp \
     bionic/__set_errno.cpp \
     bionic/seteuid.cpp \
@@ -243,7 +241,6 @@ libc_bionic_ndk_src_files := \
     bionic/wchar.cpp \
     bionic/wctype.cpp \
     bionic/wmempcpy.cpp \
-    bionic/writev.cpp \
 
 libc_bionic_ndk_src_files += \
     codeaurora/PropClientDispatch.cpp \
@@ -628,8 +625,7 @@ ifeq ($(TARGET_ARCH),$(filter $(TARGET_ARCH),mips mips64))
   use_clang := false
 endif
 
-# Disable clang for targets who specify it
-ifeq ($(TARGET_BIONIC_DISABLE_CLANG),true)
+ifeq ($(TARGET_NEEDS_GCC_LIBC),true)
   use_clang := false
 endif
 
@@ -654,6 +650,10 @@ endif
 
 libc_malloc_src := bionic/jemalloc_wrapper.cpp
 libc_common_c_includes += external/jemalloc/include
+
+ifeq ($(BOARD_USES_LEGACY_MMAP),true)
+  libc_common_cflags += -DLEGACY_MMAP
+endif
 
 # Define some common conlyflags
 libc_common_conlyflags := \
@@ -1052,7 +1052,7 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := $(libc_bionic_ndk_src_files)
 LOCAL_CFLAGS := $(libc_common_cflags) \
-    -Wframe-larger-than=2048
+    -Wframe-larger-than=2048 \
 
 LOCAL_CONLYFLAGS := $(libc_common_conlyflags)
 LOCAL_CPPFLAGS := $(libc_common_cppflags) -Wold-style-cast \
