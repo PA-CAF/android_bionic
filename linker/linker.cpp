@@ -699,11 +699,7 @@ enum walk_action_result_t : uint32_t {
   kWalkSkip = 2
 };
 
-static soinfo* find_library(android_namespace_t* ns,
-                           const char* name, int rtld_flags,
-                           const android_dlextinfo* extinfo,
-                           soinfo* needed_by);
-
+#ifdef LD_SHIM_LIBS
 // g_ld_all_shim_libs maintains the references to memory as it used
 // in the soinfo structures and in the g_active_shim_libs list.
 static std::vector<ShimDescriptor> g_ld_all_shim_libs;
