@@ -359,11 +359,6 @@ static ElfW(Addr) __linker_init_post_relocation(KernelArgumentBlock& args) {
   parse_LD_SHIM_LIBS(LD_SHIM_LIBS);
 #endif
 
-#ifdef LD_SHIM_LIBS
-  // Read from TARGET_LD_SHIM_LIBS
-  parse_LD_SHIM_LIBS(LD_SHIM_LIBS);
-#endif
-
   somain = si;
 
   std::vector<android_namespace_t*> namespaces = init_default_namespaces(executable_path);
